@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getTasks, createTask } from "@/services/taskService";
+import { getTasks, createTask, updateTaskStatus,deleteTask } from "@/services/taskService";
 import { Task } from "@/types/task";
 
 export default function Home() {
@@ -46,6 +46,35 @@ export default function Home() {
       fetchTasks();
     } catch (err) {
       alert("Failed to create task");
+    }
+  };
+
+  const handleStart = async (id: number) => {
+    try {
+      await updateTaskStatus(id, "in_progress");
+      fetchTasks();
+    } catch {
+      alert("Failed to update status");
+    }
+  };
+
+  const handleComplete = async (id: number) => {
+    try {
+      await updateTaskStatus(id, "done");
+      fetchTasks();
+    } catch {
+      alert("Failed to update status");
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this task?")) return;
+
+    try {
+      await deleteTask(id);
+      fetchTasks();
+    } catch {
+      alert("Only completed tasks can be deleted");
     }
   };
 
