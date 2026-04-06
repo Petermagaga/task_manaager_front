@@ -7,6 +7,7 @@ import {
   createTask,
   updateTaskStatus,
   deleteTask,
+  updateTask
 } from "@/services/taskService";
 import { Task } from "@/types/task";
 
@@ -44,6 +45,12 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   try {
     if (editingTask) {
+      await updateTask(editingTask.id,{
+        title,
+        due_date: dueDate,
+        priority,
+      });
+
       alert("Update function not connected yet");
     } else {
       await createTask({
@@ -116,10 +123,11 @@ const handleSubmit = async (e: React.FormEvent) => {
 
       {/* DASHBOARD */}
       <div className="grid grid-cols-4 gap-4 mb-8">
-        <div className="p-4 shadow rounded bg-blue">Total: {stats.total}</div>
-        <div className="p-4 shadow rounded bg-blue">Pending: {stats.pending}</div>
-        <div className="p-4 shadow rounded bg-white">Progress: {stats.progress}</div>
-        <div className="p-4 shadow rounded bg-white">Done: {stats.done}</div>
+     
+<div className="p-4 rounded-xl shadow bg-blue-500 text-white">Total: {stats.total}</div>
+<div className="p-4 rounded-xl shadow bg-yellow-500 text-white">Pending: {stats.pending}</div>
+<div className="p-4 rounded-xl shadow bg-purple-500 text-white">Progress: {stats.progress}</div>
+<div className="p-4 rounded-xl shadow bg-green-500 text-white">Done: {stats.done}</div>     
       </div>
 
       {/* SEARCH + FILTER */}
@@ -195,7 +203,10 @@ className="space-y-4 bg-white text-black p-6 rounded-xl shadow mb-8"
       {loading ? (
         <p>Loading...</p>
       ) : filteredTasks.length === 0 ? (
-        <p>No tasks found</p>
+        <div className="text-center p-10 text-gray-500">
+  <p className="text-lg">No tasks yet 😴</p>
+  <p>Create your first task above</p>
+</div>
       ) : (
         <div className="grid gap-4">
           {filteredTasks.map((task) => (
@@ -206,9 +217,11 @@ className="space-y-4 bg-white text-black p-6 rounded-xl shadow mb-8"
 
 
             >
-              <h2 className="font-bold text-lg">{task.title}</h2>
+              <h2 className="text-xl font-semibold mb-2">{task.title}</h2>
 
-              <p>📅 {task.due_date}</p>
+              <p>
+  📅 {new Date(task.due_date).toLocaleDateString()}
+</p>
 
 <p>
   Priority:
