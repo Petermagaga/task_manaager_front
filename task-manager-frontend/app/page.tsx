@@ -116,8 +116,8 @@ const handleSubmit = async (e: React.FormEvent) => {
 
       {/* DASHBOARD */}
       <div className="grid grid-cols-4 gap-4 mb-8">
-        <div className="p-4 shadow rounded bg-white">Total: {stats.total}</div>
-        <div className="p-4 shadow rounded bg-white">Pending: {stats.pending}</div>
+        <div className="p-4 shadow rounded bg-blue">Total: {stats.total}</div>
+        <div className="p-4 shadow rounded bg-blue">Pending: {stats.pending}</div>
         <div className="p-4 shadow rounded bg-white">Progress: {stats.progress}</div>
         <div className="p-4 shadow rounded bg-white">Done: {stats.done}</div>
       </div>
@@ -147,14 +147,19 @@ const handleSubmit = async (e: React.FormEvent) => {
       {/* FORM */}
       <form
         onSubmit={handleSubmit}
-        className="space-y-4 bg-white p-6 rounded-xl shadow mb-8"
-      >
+
+className="space-y-4 bg-white text-black p-6 rounded-xl shadow mb-8"
+
+
+>
         <input
           type="text"
           placeholder="Task title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full p-3 border rounded"
+          
+          className="w-full p-3 border rounded text-black"
+
           required
         />
 
@@ -162,7 +167,10 @@ const handleSubmit = async (e: React.FormEvent) => {
           type="date"
           value={dueDate}
           onChange={(e) => setDueDate(e.target.value)}
-          className="w-full p-3 border rounded"
+         
+          className="w-full p-3 border rounded text-black"
+
+
           required
         />
 
@@ -176,7 +184,9 @@ const handleSubmit = async (e: React.FormEvent) => {
           <option value="high">High</option>
         </select>
 
-        <button className="w-full bg-blue-600 text-white py-3 rounded hover:scale-105 transition">
+        <button 
+        type="submit"
+        className="w-full bg-blue-600 text-white py-3 rounded hover:scale-105 transition" >
           {editingTask ? "Update Task" : "Create Task"}
         </button>
       </form>
@@ -191,11 +201,29 @@ const handleSubmit = async (e: React.FormEvent) => {
           {filteredTasks.map((task) => (
             <div
               key={task.id}
-              className="p-4 border rounded-xl shadow bg-white hover:scale-[1.02] transition duration-300"
+             
+              className="p-4 border rounded-xl shadow bg-white text-black hover:scale-[1.02] transition duration-300"
+
+
             >
               <h2 className="font-bold text-lg">{task.title}</h2>
 
               <p>📅 {task.due_date}</p>
+
+<p>
+  Priority:
+  <span
+    className={`ml-2 px-2 py-1 rounded text-white ${
+      task.priority === "high"
+        ? "bg-red-500"
+        : task.priority === "medium"
+        ? "bg-yellow-500"
+        : "bg-green-500"
+    }`}
+  >
+    {task.priority}
+  </span>
+</p>
 
 
 
@@ -204,6 +232,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               <div className="flex gap-2 mt-3">
                 {task.status === "pending" && (
                   <button
+                  type="button"
                     onClick={() => handleStart(task.id)}
                     className="bg-yellow-500 text-white px-3 py-1 rounded"
                   >
@@ -213,24 +242,27 @@ const handleSubmit = async (e: React.FormEvent) => {
 
                 {task.status === "in_progress" && (
                   <button
+                  type="button"
                     onClick={() => handleComplete(task.id)}
-                    className="bg-green-600 text-white px-3 py-1 rounded"
+                    className="bg-green-600 text-green px-3 py-1 rounded"
                   >
                     Complete
                   </button>
                 )}
 
                 <button
+                type="button"
                   onClick={() => handleEdit(task)}
-                  className="bg-blue-500 text-white px-3 py-1 rounded"
+                  className="bg-blue-500 text-green px-3 py-1 rounded"
                 >
                   Edit
                 </button>
 
                 {task.status === "done" && (
                   <button
+                  type="button"
                     onClick={() => handleDelete(task.id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded"
+                    className="bg-red-500 text-green px-3 py-1 rounded"
                   >
                     Delete
                   </button>
